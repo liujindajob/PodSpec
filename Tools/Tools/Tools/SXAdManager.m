@@ -85,6 +85,34 @@
 //    }
     
     
+    [[HLAPIRequest request].enableDefaultParams(NO).setCustomURL(path).success(^(id response){
+        
+        NSArray *adArray = [response valueForKey:@"ads"];
+        NSString *imgUrl = adArray[0][@"res_url"][0];
+        NSString *imgUrl2 = nil;
+        if (adArray.count >1) {
+            imgUrl2= adArray[1][@"res_url"][0];
+        }
+        
+        BOOL one = [[NSUserDefaults standardUserDefaults]boolForKey:@"one"];
+        if (imgUrl2.length > 0) {
+            if (one) {
+                [self downloadImage:imgUrl];
+                [[NSUserDefaults standardUserDefaults]setBool:!one forKey:@"one"];
+            }else{
+                [self downloadImage:imgUrl2];
+                [[NSUserDefaults standardUserDefaults]setBool:!one forKey:@"one"];
+            }
+        }else{
+            [self downloadImage:imgUrl];
+        }
+
+        
+    }) start] ;
+                                                                            
+
+    
+    
     
     
     
